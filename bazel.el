@@ -83,7 +83,7 @@ Emacs-specific, such as ‘--tool_tag=emacs’."
 (define-obsolete-variable-alias 'bazel-mode-buildifier-command
   'bazel-buildifier-command "2021-04-13")
 
-(defcustom bazel-buildifier-command "buildifier"
+(defcustom bazel-buildifier-command "plz-format"
   "Command to run Buildifier."
   :type 'string
   :risky t
@@ -223,8 +223,7 @@ corresponding to the file types documented at URL
              (process-file-side-effects t)
              (return-code
               (apply #'process-file bazel-buildifier-command nil temp-buffer nil
-                     `(,@(bazel--buildifier-file-flags type input-file)
-                       "--" ,(file-name-unquote (file-local-name temp-file))))))
+                     input-file))))
         (if (eq return-code 0)
             (progn
               (insert-file-contents temp-file nil nil nil :replace)
